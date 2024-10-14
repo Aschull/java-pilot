@@ -2,7 +2,7 @@ package com.pilot.demo.client;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.pilot.demo.application.client.MessageHandler;
+import com.pilot.demo.domain.services.MessageHandler;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;

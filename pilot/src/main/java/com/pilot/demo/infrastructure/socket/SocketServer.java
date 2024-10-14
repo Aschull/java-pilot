@@ -1,13 +1,15 @@
 package com.pilot.demo.infrastructure.socket;
 import java.net.*;
 
-import com.pilot.demo.application.client.MessageHandler;
+import org.springframework.stereotype.Component;
+
 import com.pilot.demo.domain.interfaces.MessageHandlerInterface;
 
 import java.io.*;
 
+@Component
 public class SocketServer {
-    private MessageHandlerInterface messageHandler = new MessageHandler();
+    private MessageHandlerInterface messageHandler;
 
     public SocketServer(MessageHandlerInterface messageHandler) {
         this.messageHandler = messageHandler;
@@ -44,7 +46,10 @@ public class SocketServer {
                 
                 System.out.println("SocketServer: Server Message: " + message);
                 MessageHandlerInterface messageHandler = this.getMessageHandler();
-                messageHandler.handler(conn, server, message);
+                messageHandler.setMessage(message);
+                messageHandler.setConn(conn);
+                messageHandler.setServer(server);
+                messageHandler.handler();
    
             }
         }
