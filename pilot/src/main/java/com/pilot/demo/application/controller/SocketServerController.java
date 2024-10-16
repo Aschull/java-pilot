@@ -5,10 +5,12 @@ import java.util.concurrent.TimeoutException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pilot.demo.domain.services.MessageHandler;
-import com.pilot.demo.infrastructure.rabbitmq.RabbitMQConnection;
+import com.pilot.demo.domain.services.TrackerIdentifierService;
+// import com.pilot.demo.infrastructure.rabbitmq.RabbitMQConnection;
 import com.pilot.demo.infrastructure.rabbitmq.RabbitMQPublisher;
 import com.pilot.demo.infrastructure.socket.SocketServer;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 
 
 @RestController
@@ -21,10 +23,13 @@ public class SocketServerController {
 
     @GetMapping("/startServer")
     public void startServer() throws IOException, TimeoutException {
-        RabbitMQConnection conn = new RabbitMQConnection(null, null);
-        RabbitMQPublisher publisher = new RabbitMQPublisher(conn, "my_exchange", "my_routing_key");
-        MessageHandler messageHandler = new MessageHandler(publisher, null, null, null);
-        SocketServer server = new SocketServer(messageHandler);
+        // RabbitMQConnection connection = new RabbitMQConnection(null);
+        // Connection conn = connection.getConn();
+        // Channel channel = connection.getChannel();
+        // RabbitMQPublisher publisher = new RabbitMQPublisher(conn, channel, "my_exchange", "my_routing_key");
+        RabbitMQPublisher publisher = new RabbitMQPublisher(null, "my_exchange", "my_routing_key");
+        TrackerIdentifierService trackerIdentifier = new TrackerIdentifierService("", publisher);
+        SocketServer server = new SocketServer(trackerIdentifier);
         server.startServer();
         
     }

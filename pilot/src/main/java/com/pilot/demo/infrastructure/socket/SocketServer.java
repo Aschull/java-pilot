@@ -3,25 +3,27 @@ import java.net.*;
 
 import org.springframework.stereotype.Component;
 
-import com.pilot.demo.domain.interfaces.MessageHandlerInterface;
+import com.pilot.demo.domain.interfaces.TrackerIdentifierInterface;
 
 import java.io.*;
 
 @Component
 public class SocketServer {
-    private MessageHandlerInterface messageHandler;
+    // private MessageHandlerInterface messageHandler;
+    private TrackerIdentifierInterface trackerIdentifier;
 
-    public SocketServer(MessageHandlerInterface messageHandler) {
-        this.messageHandler = messageHandler;
+
+    public TrackerIdentifierInterface getTrackerIdentifier() {
+        return this.trackerIdentifier;
     }
 
-    public MessageHandlerInterface getMessageHandler() {
-        return this.messageHandler;
-    }
+    // public MessageHandlerInterface getMessageHandler() {
+    //     return this.messageHandler;
+    // }
 
     // Constructor
-    public SocketServer() {
-        this.messageHandler = null;
+    public SocketServer(TrackerIdentifierInterface trackerIdentifier) {
+        this.trackerIdentifier = trackerIdentifier;
     }
 
     public void startServer() throws IOException {
@@ -45,11 +47,16 @@ public class SocketServer {
                 String message = new String(byte_message);
                 
                 System.out.println("SocketServer: Server Message: " + message);
-                MessageHandlerInterface messageHandler = this.getMessageHandler();
-                messageHandler.setMessage(message);
-                messageHandler.setConn(conn);
-                messageHandler.setServer(server);
-                messageHandler.handler();
+
+                TrackerIdentifierInterface trackerIdentifier = this.getTrackerIdentifier();
+                trackerIdentifier.setRawMessage(message);
+                trackerIdentifier.identifier();
+                trackerIdentifier.orchestrator();
+
+
+                // MessageHandlerInterface messageHandler = this.getMessageHandler();
+                // messageHandler.setMessage(message);
+                // messageHandler.handlerToTracker();
    
             }
         }
