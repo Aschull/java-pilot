@@ -45,7 +45,7 @@ public class TrackerIdentifierService implements TrackerIdentifierInterface {
 
     public List<String> identifier() {
 
-        setRawMessage("POS;FOX23;001;-0;-0");
+        // setRawMessage("POS;FOX23;001;-0;-0");
 
         String[] data = getRawMessage().split(";");
 
@@ -72,7 +72,7 @@ public class TrackerIdentifierService implements TrackerIdentifierInterface {
         SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
         String dateTimeNow = formato.format(dateNow);
         
-        String rabbitMessage = data.get(0) + "BREAK" + data.get(1) + "BREAK" +dateTimeNow;
+        String rabbitMessage = data.get(0).trim().concat("BREAK").concat(data.get(1)).concat("BREAK").concat(dateTimeNow);
         switch (data.get(2)) {
             case "FOX23":
                 MessageHandlerService messageHandler = new MessageHandlerService(rabbitMessage);

@@ -7,6 +7,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.pilot.demo.infrastructure.rabbitmq.RabbitMQPublisher;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
@@ -22,6 +23,12 @@ public class RabbitMQConfig {
         factory.setPassword("rabbit");
         return factory;
     }
+    
+    @Bean
+    public RabbitMQPublisher rabbitMQPublisher() throws IOException, TimeoutException {
+        return new RabbitMQPublisher(connectionFactory());
+    }
+
  
     // @Bean
     // public Connection connection() throws IOException, TimeoutException {

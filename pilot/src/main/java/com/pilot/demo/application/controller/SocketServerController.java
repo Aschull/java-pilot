@@ -2,6 +2,7 @@ package com.pilot.demo.application.controller;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,9 @@ import com.rabbitmq.client.Connection;
 
 @RestController
 public class SocketServerController {
+    @Autowired
+    private RabbitMQPublisher publisher;
+
 
     @GetMapping("/healthCheck")
     public String healthCheck() {
@@ -27,7 +31,7 @@ public class SocketServerController {
         // Connection conn = connection.getConn();
         // Channel channel = connection.getChannel();
         // RabbitMQPublisher publisher = new RabbitMQPublisher(conn, channel, "my_exchange", "my_routing_key");
-        RabbitMQPublisher publisher = new RabbitMQPublisher(null, "my_exchange", "my_routing_key");
+        
         TrackerIdentifierService trackerIdentifier = new TrackerIdentifierService("", publisher);
         SocketServer server = new SocketServer(trackerIdentifier);
         server.startServer();

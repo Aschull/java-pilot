@@ -12,19 +12,17 @@ import com.rabbitmq.client.ConnectionFactory;
 @Service
 public class RabbitMQPublisher {
 
-    private ConnectionFactory factory = null;
+    private ConnectionFactory factory;
 
+    @Autowired
     private String exchange;
+
+    @Autowired
     private String routingKey;
     
-    public RabbitMQPublisher(
-        ConnectionFactory connectionFactory,
-        String exchange,
-        String routingKey
-    ) throws IOException, TimeoutException {
-        this.factory = connectionFactory;
-        this.exchange = exchange;
-        this.routingKey = routingKey;
+    @Autowired
+    public RabbitMQPublisher(ConnectionFactory factory) throws IOException, TimeoutException {
+        this.factory = factory;
     }
 
     public ConnectionFactory getFactory() {
